@@ -1,0 +1,15 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "claude-armcknight",
+  "version": "0.1.0",
+  "description": "An issue-to-merge workflow for Claude Code: start a Linear issue, review, commit, open a PR, watch CI, merge, and clean up.",
+  "author": {
+    "name": "Andrew McKnight",
+    "email": "git@andrew.mcknight.io",
+    "url": "https://mcknight.io"
+  },
+  "homepage": "https://github.com/armcknight/claude-armcknight",
+  "repository": "https://github.com/armcknight/claude-armcknight",
+  "license": "Apache-2.0",
+  "keywords": ["linear", "git", "worktree", "pull-request", "workflow"]
+}

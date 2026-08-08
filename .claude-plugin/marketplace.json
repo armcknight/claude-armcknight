@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "armcknight",
+  "description": "Claude Code plugins by Andrew McKnight",
+  "owner": {
+    "name": "Andrew McKnight",
+    "email": "git@andrew.mcknight.io"
+  },
+  "plugins": [
+    {
+      "name": "claude-armcknight",
+      "description": "An issue-to-merge workflow for Claude Code: start a Linear issue, review, commit, open a PR, watch CI, merge, and clean up.",
+      "author": {
+        "name": "Andrew McKnight"
+      },
+      "source": "./plugins/claude-armcknight",
+      "category": "productivity"
+    }
+  ]
+}

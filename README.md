@@ -42,8 +42,7 @@ These commands shell out to tools that are not bundled here. Install what the co
 | [`linctl`](https://github.com/dorkitude/linctl) | `start`, `pr`, `merge`, `finish` | Read and update Linear issues from the CLI. |
 | `direnv` | `start`, `pr`, `merge`, `finish` | Every `linctl` call runs under `direnv exec`, which supplies the Linear API token from the repository's `.envrc`. |
 | [`gh`](https://cli.github.com) | `pr` | Open PRs and read CI status. |
-| [`workr`](https://github.com/armcknight/workr) or a `work` fish function | `finish` | Tear down the git worktree and its tmux session. |
-| `fish` | `finish` | `finish` invokes `work_fish` through `fish -c`. |
+| [`workr`](https://github.com/armcknight/workr) | `finish` | Supplies the `work` binary. `finish` runs `work finish <branch>` to tear down the git worktree and its tmux session. |
 
 ## Assumptions
 

@@ -35,7 +35,14 @@ Commands are namespaced by plugin, so `/pr` becomes `/claude-armcknight:pr`. The
 
 ## Requirements
 
-These commands shell out to tools that are not bundled here. Install what the commands you use need, or take the lot with `brew bundle --file=Brewfile`.
+These commands shell out to tools that are not bundled here. Install what the commands you use need, or take the lot:
+
+```sh
+brew trust dorkitude/linctl     # required, see below
+brew bundle --file=Brewfile
+```
+
+`linctl` comes from a third-party tap. Homebrew refuses to load formulae from untrusted taps, and `brew bundle` aborts on the first one it meets — installing **nothing**, not even the entries after it. Trust the tap once and the bundle runs clean.
 
 | Tool | Used by | Purpose |
 | --- | --- | --- |

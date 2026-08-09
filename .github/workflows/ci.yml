@@ -1,0 +1,12 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    uses: armcknight/workflows/.github/workflows/claude-plugin-ci.yml@main
+    with:
+      plugin-path: plugins/claude-armcknight

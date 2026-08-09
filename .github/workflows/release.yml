@@ -1,0 +1,24 @@
+name: release
+
+# Cut a release with `make release` (or `make release-rc`), which bumps the
+# manifest, migrates the changelog, and pushes the tag. This reacts to that tag.
+#
+# The tag is bookkeeping. Claude Code installs this plugin by cloning the repo
+# and tracking main — tags are never fetched — so what actually reaches a user
+# is the `version` in plugins/claude-armcknight/.claude-plugin/plugin.json on
+# main. The release job fails if the tag and that version disagree.
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-*'
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    uses: armcknight/workflows/.github/workflows/claude-plugin-release.yml@main
+    with:
+      plugin-path: plugins/claude-armcknight
+      prerelease: ${{ contains(github.ref_name, '-') }}

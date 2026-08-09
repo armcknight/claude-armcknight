@@ -5,7 +5,7 @@ CHANGELOG      = CHANGELOG.md
 VERSION_PATTERN = "version": "([^"]+)"
 VERSION         = $(shell vrsn -r -f $(MANIFEST) -p '$(VERSION_PATTERN)')
 
-.PHONY: validate version patch minor major release
+.PHONY: validate version patch minor major release release-rc
 
 # What CI runs. Catches manifest errors and, more usefully, command frontmatter
 # that fails to parse — which otherwise loads silently with empty metadata.
@@ -23,15 +23,13 @@ patch minor major:
 # Bump first (make patch/minor/major), then release. The bump is the release as
 # far as users are concerned: Claude Code tracks main and compares version
 # strings, so a tag without a manifest bump moves nobody.
-# This is spelled out rather than delegated to armcknight/tools' prepare-release,
-# which would do all of it in one call. prepare-release locates the version with
-# --file/--key, and --key cannot read JSON — only vrsn grew a --pattern escape
-# hatch. Teach prepare-release --pattern and this target collapses to:
-#   prepare-release --file $(MANIFEST) --pattern '$(VERSION_PATTERN)' --push --github-release
-# RC releases are blocked on the same gap, so there is no release-rc target yet.
+# Bump first (make patch/minor/major), then release. The bump is what users
+# actually receive; prepare-release refuses if the manifest still matches the
+# last changelog section, which catches forgetting to bump.
+#
+# The GitHub release is left to CI, which the pushed tag triggers.
 release: validate
-	migrate-changelog $(CHANGELOG) $(VERSION)
-	git add $(MANIFEST) $(CHANGELOG)
-	git commit -m "release $(VERSION)"
-	git tag -a $(VERSION) -m "$(VERSION)"
-	git push && git push --tags
+	prepare-release --file $(MANIFEST) --pattern '$(VERSION_PATTERN)' --changelog $(CHANGELOG) --push
+
+release-rc: validate
+	prepare-release rc --file $(MANIFEST) --pattern '$(VERSION_PATTERN)' --changelog $(CHANGELOG) --push

@@ -77,6 +77,17 @@ Declare them in the command's frontmatter with `argument-hint`, which is what th
 
 [superlinear](https://github.com/armcknight/superlinear) drives `/claude-armcknight:start`, `/claude-armcknight:commit` and `/claude-armcknight:pr --autonomous` to take a Linear issue to an open pull request without a human in the loop.
 
+## Releasing
+
+```sh
+make patch       # or minor / major — bumps version in plugin.json
+make release     # migrates the changelog, commits, tags, pushes
+```
+
+Pushing the tag triggers the release workflow, which revalidates the manifests and creates the GitHub release with notes from the changelog. `make release-rc` cuts a release candidate instead.
+
+**The version bump is the release.** Claude Code installs this plugin by cloning the repo and tracking `main` — the clone fetches `+refs/heads/main:refs/remotes/origin/main`, so tags never reach anyone's machine. `claude plugin update` compares the `version` in `plugin.json` on `main`, so a tag without a bump moves nobody. The release job fails when the tag and the manifest disagree, for exactly that reason.
+
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE).

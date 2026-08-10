@@ -38,11 +38,10 @@ Commands are namespaced by plugin, so `/pr` becomes `/claude-armcknight:pr`. The
 These commands shell out to tools that are not bundled here. Install what the commands you use need, or take the lot:
 
 ```sh
-brew trust dorkitude/linctl     # required, see below
-brew bundle --file=Brewfile
+make init
 ```
 
-`linctl` comes from a third-party tap. Homebrew refuses to load formulae from untrusted taps, and `brew bundle` aborts on the first one it meets — installing **nothing**, not even the entries after it. Trust the tap once and the bundle runs clean.
+`make init` trusts the two third-party taps and then runs `brew bundle --file=Brewfile`. The trust step is required, not decoration: Homebrew refuses to load formulae or casks from an untrusted tap, and `brew bundle` aborts on the first one it meets — installing **nothing**, not even the entries after it.
 
 | Tool | Used by | Purpose |
 | --- | --- | --- |
@@ -50,6 +49,7 @@ brew bundle --file=Brewfile
 | `direnv` | `start`, `pr`, `merge`, `finish` | Every `linctl` call runs under `direnv exec`, which supplies the Linear API token from the repository's `.envrc`. |
 | [`gh`](https://cli.github.com) | `pr` | Open PRs and read CI status. |
 | [`workr`](https://github.com/armcknight/workr) | `finish` | Supplies the `work` binary. `finish` runs `work finish <branch>` to tear down the git worktree and its tmux session. |
+| [`tools`](https://github.com/armcknight/homebrew-tools) | `make patch`, `make release` | Supplies `vrsn` and `prepare-release`. Needed to cut a release, not to run any command. **4.4.0 or later** — see [Releasing](#releasing). |
 
 ## Assumptions
 
@@ -79,12 +79,16 @@ Declare them in the command's frontmatter with `argument-hint`, which is what th
 
 ## Releasing
 
+`make` on its own lists every target. `make init` installs what they need.
+
 ```sh
 make patch       # or minor / major — bumps version in plugin.json
 make release     # migrates the changelog, commits, tags, pushes
 ```
 
 Pushing the tag triggers the release workflow, which revalidates the manifests and creates the GitHub release with notes from the changelog. `make release-rc` cuts a release candidate instead.
+
+`make release` needs **`prepare-release` 4.4.0 or later**, for its `--pattern` flag. Older versions accept only `--key`, which cannot read JSON: 4.3.0 reads the entire `plugin.json` as the version string and writes it into the changelog as a section heading before it fails. Check with `prepare-release --help | grep -- --pattern`, and upgrade with `brew upgrade --cask armcknight/tools/tools`.
 
 **The version bump is the release.** Claude Code installs this plugin by cloning the repo and tracking `main` — the clone fetches `+refs/heads/main:refs/remotes/origin/main`, so tags never reach anyone's machine. `claude plugin update` compares the `version` in `plugin.json` on `main`, so a tag without a bump moves nobody. The release job fails when the tag and the manifest disagree, for exactly that reason.
 

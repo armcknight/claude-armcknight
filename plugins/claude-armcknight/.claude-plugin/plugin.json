@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "claude-armcknight",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An issue-to-merge workflow for Claude Code: start a Linear issue, review, commit, open a PR, watch CI, merge, and clean up.",
   "author": {
     "name": "Andrew McKnight",

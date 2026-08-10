@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] 2026-08-10
+
 ### Added
 - `make validate`, `make patch/minor/major`, `make release` and `make release-rc`, plus `ci` and `release` workflows delegating to `armcknight/workflows`. The release job fails if the tag disagrees with the manifest version, since a tag alone moves no installs.
 - `Brewfile` covering the tools the commands shell out to, and the `brew trust dorkitude/linctl` step it needs — without which `brew bundle` aborts on the untrusted tap and installs nothing at all.
